@@ -39,8 +39,6 @@ class App extends Component {
     })
   }
 
-  //pass these ^ down and format classname
-
   render() {
   return (
     <div className="column">
