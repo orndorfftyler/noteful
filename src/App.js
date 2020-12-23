@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import FolderList from './FolderList/FolderList';
 import NoteList from './NoteList/NoteList';
 import {Route, Link} from 'react-router-dom';
-import store from './store';
+//import store from './store';
 import SingleNote from './SingleNote/SingleNote';
 import SingleFolder from './SingleFolder/SingleFolder';
+import NoteContext from './NoteContext';
 
 import './App.css';
 
@@ -12,8 +13,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      folders: store.folders,
-      notes: store.notes,
+      folders: [],
+      notes: [],
       folderSelected: '',
       noteSelected: ''
     }
@@ -39,82 +40,105 @@ class App extends Component {
     })
   }
 
+  deleteNote = (id) => {
+    let newNotes = this.state.notes.filter(obj => (obj.id !== id));
+    this.setState({
+      notes: newNotes,
+    })
+  }
+
+  componentDidMount = () => {
+
+    fetch('http://localhost:9090/folders')
+      .then(res => {
+        if (res.ok) {
+          return res.json()
+        }
+        throw new Error(res.status)
+      })
+      .then(resJson =>
+        //console.log(resJson)
+        
+        this.setState({
+          folders: resJson
+        })
+        
+        )
+      .catch(error => console.log({ error }))
+  
+
+    fetch('http://localhost:9090/notes')
+    .then(res => {
+      if (res.ok) {
+        return res.json()
+      }
+      throw new Error(res.status)
+    })
+    .then(resJson =>
+      //console.log(resJson)
+      
+      this.setState({
+        notes: resJson
+      })
+      
+      )
+    .catch(error => console.log({ error }))
+  }
+
+  
+
   render() {
+
+    const contextValue = {
+      folders: this.state.folders,
+      notes: this.state.notes,
+      folderSelected: this.state.folderSelected,
+      noteSelected: this.state.noteSelected,
+      noteSelect: this.noteSelect,
+      folderSelect: this.folderSelect,
+      clearSelections: this.clearSelections,
+      deleteNote: this.deleteNote,
+    };
+  
+
   return (
     <div className="column">
       <header>
         <Link to='/'><h1 onClick={this.clearSelections}>Noteful </h1></Link>
       </header>
       <main >
-      {/* main route */}
-      <Route 
-            exact path='/'
-            render={() => {
-              return (
-                <>
-                <FolderList 
-                  folders={this.state.folders}
-                  folderSelected={this.state.folderSelected}
-                  folderSelect={this.folderSelect}
-                />
-                <NoteList 
-                  notes={this.state.notes}
-                  noteSelected={this.state.noteSelected}
-                  noteSelect={this.noteSelect}
-                  folderSelect={this.folderSelect}
-                />
-                </>
-                  )}
-            }
-      />
-      {/* folder route */}
-      <Route 
-            path='/folder/:folderId'
-            render={() => {
-              let selectedNotes = this.state.notes.filter(item => item.folderId === this.state.folderSelected);
-              return (
-                <>
-                <FolderList 
-                  folders={this.state.folders}
-                  folderSelected={this.state.folderSelected}
-                  folderSelect={this.folderSelect}
-                />
-                <NoteList 
-                  notes={selectedNotes}
-                  noteSelected={this.state.noteSelected}
-                  noteSelect={this.noteSelect}
-                  folderSelect={this.folderSelect}
-                />
-                </>
-                  )}
-            }
-      />
-      {/* note route */}
-      <Route 
-            path='/note/:noteId'
-            render={({ history }) => {
-              let selectedNote = this.state.notes.find(item => item.id === this.state.noteSelected);
-              let selectedFolder = this.state.folders.find(item => item.id === this.state.folderSelected);
+        <NoteContext.Provider value={contextValue}>
+          {/* main route */}
+          <Route 
+                exact path='/'
+                component={FolderList}
+          />
+          <Route 
+                exact path='/'
+                component={NoteList}
+          />
+          {/* folder route */}
+          <Route 
+                path='/folder/:folderId'
+                component={FolderList}
+          />
+          <Route 
+                path='/folder/:folderId'
+                component={NoteList}
+          />
 
-              return (
-                <>
-                <SingleFolder 
-                  folder={selectedFolder}
-                  folderSelected={this.state.folderSelected}
-                  folderSelect={this.folderSelect}
-                  goBack={() => history.goBack()}
-                />
-                <SingleNote 
-                  note={selectedNote}
-                  noteSelected={this.state.noteSelected}
-                  noteSelect={this.noteSelect}
-                  folderSelect={this.folderSelect}
-                />
-                </>
-                  )}
-            }
-      />
+          {/* note route */}
+          <Route 
+                path='/note/:noteId'
+                component={SingleFolder}
+          />
+          <Route 
+                path='/note/:noteId'
+                component={SingleNote}
+          />
 
+
+        </NoteContext.Provider>
       </main>
 
     </div>

@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Folder from '../Folder/Folder';
+import NoteContext from '../NoteContext';
+
 //import { withRouter } from 'react-router-dom';
 
 
-function SingleFolder(props) {
+class SingleFolder extends Component {
+    static contextType = NoteContext;
+
+
+    render() {
+        let selectedFolder = this.context.folders.find(item => item.id === this.context.folderSelected);
+
     return (
         <div className="list">
             <Folder 
-                key={props.folder.id}
-                id={props.folder.id}
-                name={props.folder.name}
-                folderSelected={props.folderSelected}
-                folderSelect={props.folderSelect}
+                key={selectedFolder.id}
+                id={selectedFolder.id}
+                name={selectedFolder.name}
             />
-            <button onClick={props.goBack}>Back</button>
+            <button onClick={this.props.history.goBack}>Back</button>
         </div>
         );
-
+    }
 }
 
 export default SingleFolder;

@@ -1,15 +1,19 @@
 import React from 'react';
 import Folder from '../Folder/Folder';
+import NoteContext from '../NoteContext';
 
-function FolderList(props) {
-    let temp = props.folders.map((folder) => {
+
+class FolderList extends React.Component {
+    static contextType = NoteContext;
+    
+    render() {
+
+    let temp = this.context.folders.map((folder) => {
         return (
             <Folder 
                 key={folder.id}
                 id={folder.id}
                 name={folder.name}
-                folderSelected={props.folderSelected}
-                folderSelect={props.folderSelect}
             />
             );
     });
@@ -19,6 +23,7 @@ function FolderList(props) {
             {temp}
         </div>
     );
+    }
 }
 
 export default FolderList;

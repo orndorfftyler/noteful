@@ -1,23 +1,30 @@
 import React from 'react';
 import Note from '../Note/Note';
+import NoteContext from '../NoteContext';
 
-function SingleNote(props) {
-    return (
+
+class SingleNote extends React.Component {
+    static contextType = NoteContext;
+
+    
+    render() {
+        //console.log('this.context.notes' + JSON.stringify(this.context.notes));
+        let selectedNote = this.context.notes.find(item => item.id === this.context.noteSelected);
+        return (
         <div className="list">
             <Note 
-                key={props.note.id}
-                id={props.note.id}
-                folderId={props.note.folderId}
-                name={props.note.name}
-                modified={props.note.modified}
-                noteSelected={props.noteSelected} 
-                noteSelect={props.noteSelect}
-                folderSelect={props.folderSelect}
+                key={selectedNote.id}
+                id={selectedNote.id}
+                folderId={selectedNote.folderId}
+                name={selectedNote.name}
+                modified={selectedNote.modified}
+                single={true}
 
             />
-            <p>{props.note.content}</p>
+            <p>{selectedNote.content}</p>
         </div>
         );
+    }
 
 }
 
