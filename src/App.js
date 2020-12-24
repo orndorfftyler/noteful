@@ -6,6 +6,10 @@ import {Route, Link} from 'react-router-dom';
 import SingleNote from './SingleNote/SingleNote';
 import SingleFolder from './SingleFolder/SingleFolder';
 import NoteContext from './NoteContext';
+import Nav from './Nav/Nav';
+//import AddNote from './AddNote/AddNote';
+import AddFolder from './AddFolder/AddFolder';
+
 
 import './App.css';
 
@@ -19,7 +23,6 @@ class App extends Component {
       noteSelected: ''
     }
   }
-
 
   noteSelect = (id) => {
     this.setState({
@@ -38,6 +41,7 @@ class App extends Component {
       noteSelected: '',
       folderSelected: ''
     })
+    console.log('clearSelections called');
   }
 
   deleteNote = (id) => {
@@ -45,6 +49,22 @@ class App extends Component {
     this.setState({
       notes: newNotes,
     })
+  }
+
+  addFolder = (folder) => {
+    this.setState({
+      folders: [folder, ...this.state.folders], 
+    })
+    console.log('addFolder called');
+    console.log(this.state.folders);
+  }
+
+  addNote = (note) => {
+    this.setState({
+      notes: [note, ...this.state.notes], 
+    })
+    console.log('addNote called');
+    console.log(this.state.notes);
   }
 
   componentDidMount = () => {
@@ -88,7 +108,6 @@ class App extends Component {
   
 
   render() {
-
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.notes,
@@ -98,16 +117,33 @@ class App extends Component {
       folderSelect: this.folderSelect,
       clearSelections: this.clearSelections,
       deleteNote: this.deleteNote,
+      addFolder: this.addFolder,
+      addNote: this.addNote,
     };
   
 
   return (
     <div className="column">
-      <header>
-        <Link to='/'><h1 onClick={this.clearSelections}>Noteful </h1></Link>
-      </header>
-      <main >
-        <NoteContext.Provider value={contextValue}>
+      <NoteContext.Provider value={contextValue}>
+
+        <header>
+          <Nav />
+          
+        </header>
+        <main >
+          {/*
+          <Route 
+                path='/add-note'
+                component={AddNote}
+          />
+          */}
+          {/*
+          <Route 
+                path='/add-folder'
+                component={AddFolder}
+          />
+          */}
+
           {/* main route */}
           <Route 
                 exact path='/'
@@ -138,9 +174,8 @@ class App extends Component {
           />
 
 
-        </NoteContext.Provider>
-      </main>
-
+        </main>
+      </NoteContext.Provider>
     </div>
   );
 }

@@ -9,7 +9,8 @@ const NoteContext = React.createContext({
   folderSelect: () => {},
   clearSelections: () => {},
   deleteNote: () => {},
-
+  addFolder: ()  => {},
+  addNote: ()  => {},
 })
 
 export default NoteContext
