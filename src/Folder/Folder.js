@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import NoteContext from '../NoteContext';
-
+import PropTypes from 'prop-types';
 
 class Folder extends React.Component {
     static contextType = NoteContext;
@@ -18,6 +18,9 @@ class Folder extends React.Component {
     }
 }
 
-
-
 export default Folder;
+
+Folder.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+  };

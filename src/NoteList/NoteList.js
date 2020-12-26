@@ -26,9 +26,7 @@ class NoteList extends React.Component {
                     single={false}
                 />
                 );
-            
     });
-         
 
     return (
         <div className='list'>

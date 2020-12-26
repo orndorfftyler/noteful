@@ -13,4 +13,4 @@ const NoteContext = React.createContext({
   addNote: ()  => {},
 })
 
-export default NoteContext
+export default NoteContext;

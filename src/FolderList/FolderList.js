@@ -1,7 +1,7 @@
 import React from 'react';
 import Folder from '../Folder/Folder';
 import NoteContext from '../NoteContext';
-
+import PropTypes from 'prop-types';
 
 class FolderList extends React.Component {
     static contextType = NoteContext;
@@ -27,3 +27,8 @@ class FolderList extends React.Component {
 }
 
 export default FolderList;
+
+FolderList.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string
+  };

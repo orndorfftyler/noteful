@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import NoteContext from '../NoteContext';
+import PropTypes from 'prop-types';
 
 function deleteNoteRequest(id,cb) {
     fetch('http://localhost:9090/notes' + `/${id}`, {
@@ -46,6 +47,12 @@ class Note extends React.Component {
             }
 }
 
-
-
 export default Note;
+
+Note.propTypes = {
+    id: PropTypes.string,
+    folderId: PropTypes.string,
+    name: PropTypes.string,
+    modified: PropTypes.string,
+    single: PropTypes.bool
+  };

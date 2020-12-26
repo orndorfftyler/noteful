@@ -7,8 +7,15 @@ import SingleNote from './SingleNote/SingleNote';
 import SingleFolder from './SingleFolder/SingleFolder';
 import NoteContext from './NoteContext';
 import Nav from './Nav/Nav';
-//import AddNote from './AddNote/AddNote';
+import AddNote from './AddNote/AddNote';
 import AddFolder from './AddFolder/AddFolder';
+
+import AddFolderEB from './ErrorBoundaries/AddFolderEB';
+import AddNoteEB from './ErrorBoundaries/AddNoteEB';
+import FolderRouteEB from './ErrorBoundaries/FolderRouteEB';
+import MainRouteEB from './ErrorBoundaries/MainRouteEB';
+import NoteRouteEB from './ErrorBoundaries/NoteRouteEB';
+
 
 
 import './App.css';
@@ -55,16 +62,12 @@ class App extends Component {
     this.setState({
       folders: [folder, ...this.state.folders], 
     })
-    console.log('addFolder called');
-    console.log(this.state.folders);
   }
 
   addNote = (note) => {
     this.setState({
       notes: [note, ...this.state.notes], 
     })
-    console.log('addNote called');
-    console.log(this.state.notes);
   }
 
   componentDidMount = () => {
@@ -77,7 +80,6 @@ class App extends Component {
         throw new Error(res.status)
       })
       .then(resJson =>
-        //console.log(resJson)
         
         this.setState({
           folders: resJson
@@ -95,7 +97,6 @@ class App extends Component {
       throw new Error(res.status)
     })
     .then(resJson =>
-      //console.log(resJson)
       
       this.setState({
         notes: resJson
@@ -131,48 +132,53 @@ class App extends Component {
           
         </header>
         <main >
-          {/*
-          <Route 
-                path='/add-note'
-                component={AddNote}
-          />
-          */}
-          {/*
+          <AddNoteEB>
+            <Route 
+                  path='/add-note'
+                  component={AddNote}
+            />
+          </AddNoteEB>
+
+          <AddFolderEB>
           <Route 
                 path='/add-folder'
                 component={AddFolder}
           />
-          */}
+          </AddFolderEB>
 
-          {/* main route */}
-          <Route 
-                exact path='/'
-                component={FolderList}
-          />
-          <Route 
-                exact path='/'
-                component={NoteList}
-          />
-          {/* folder route */}
-          <Route 
-                path='/folder/:folderId'
-                component={FolderList}
-          />
-          <Route 
-                path='/folder/:folderId'
-                component={NoteList}
-          />
-
-          {/* note route */}
-          <Route 
-                path='/note/:noteId'
-                component={SingleFolder}
-          />
-          <Route 
-                path='/note/:noteId'
-                component={SingleNote}
-          />
-
+          {/* main view */}
+          <MainRouteEB>
+            <Route 
+                  exact path='/'
+                  component={FolderList}
+            />
+            <Route 
+                  exact path='/'
+                  component={NoteList}
+            />
+          </MainRouteEB> 
+          {/* folder view */}
+          <FolderRouteEB>
+            <Route 
+                  path='/folder/:folderId'
+                  component={FolderList}
+            />
+            <Route 
+                  path='/folder/:folderId'
+                  component={NoteList}
+            />
+          </FolderRouteEB>
+          {/* note view */}
+          <NoteRouteEB>
+            <Route 
+                  path='/note/:noteId'
+                  component={SingleFolder}
+            />
+            <Route 
+                  path='/note/:noteId'
+                  component={SingleNote}
+            />
+          </NoteRouteEB>
 
         </main>
       </NoteContext.Provider>
