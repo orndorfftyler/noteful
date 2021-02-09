@@ -4,7 +4,7 @@ import NoteContext from '../NoteContext';
 import PropTypes from 'prop-types';
 
 function deleteNoteRequest(id,cb) {
-    fetch('http://localhost:9090/notes' + `/${id}`, {
+    fetch('http://localhost:8000/api/notes' + `/${id}`, {
         method: 'DELETE',
         })
         .then(res => {
