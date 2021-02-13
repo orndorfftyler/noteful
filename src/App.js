@@ -53,6 +53,7 @@ class App extends Component {
 
   deleteNote = (id) => {
     let newNotes = this.state.notes.filter(obj => (obj.id !== id));
+    console.log('deleteNote cb executed')
     this.setState({
       notes: newNotes,
     })
@@ -72,7 +73,7 @@ class App extends Component {
 
   componentDidMount = () => {
 
-    fetch('http://localhost:8000/api/folders')
+    fetch('https://obscure-peak-49376.herokuapp.com/api/folders')
       .then(res => {
         if (res.ok) {
           return res.json()
@@ -89,7 +90,7 @@ class App extends Component {
       .catch(error => console.log({ error }))
   
 
-    fetch('http://localhost:8000/api/notes')
+    fetch('https://obscure-peak-49376.herokuapp.com/api/notes')
     .then(res => {
       if (res.ok) {
         return res.json()

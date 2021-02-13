@@ -22,7 +22,7 @@ class AddNote extends React.Component {
         let time = new Date();
         newNote.modified = time.toISOString();
     
-        fetch('http://localhost:8000/api/notes', {
+        fetch('https://obscure-peak-49376.herokuapp.com/api/notes', {
             method: 'POST',
             body: JSON.stringify(newNote),
             headers: {

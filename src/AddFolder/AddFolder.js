@@ -18,7 +18,7 @@ class AddFolder extends React.Component {
         const { uuid } = require('uuidv4');
         name.id = uuid();
     
-        fetch('http://localhost:8000/api/folders', {
+        fetch('https://obscure-peak-49376.herokuapp.com/api/folders', {
             method: 'POST',
             body: JSON.stringify(name),
             headers: {

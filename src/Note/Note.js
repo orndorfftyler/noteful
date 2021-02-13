@@ -4,14 +4,13 @@ import NoteContext from '../NoteContext';
 import PropTypes from 'prop-types';
 
 function deleteNoteRequest(id,cb) {
-    fetch('http://localhost:8000/api/notes' + `/${id}`, {
+    fetch('https://obscure-peak-49376.herokuapp.com/api/notes' + `/${id}`, {
         method: 'DELETE',
         })
         .then(res => {
-            if (res.ok) {
-            return res.json()
+            if (!res.ok) {
+                throw new Error(res.status)
             }
-            throw new Error(res.status)
         })
         .then(data => {
             cb(id);
